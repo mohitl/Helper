@@ -1,11 +1,2 @@
-<!DOCTYPE html>
-<html>
-<head>
-//call header of body
-<?php include 'header.php';?>
-</head>
+<img id="giveandtakesuggestion" src="../PcImages/g&t.jpeg" />
 
-<body>
-
-</body>
-</html>
