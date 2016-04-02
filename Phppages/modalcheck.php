@@ -49,6 +49,8 @@ input.iw[placeholder]
 </style>
 
  <script type="text/javascript">
+ 
+
                $(document).ready(function(){
  
                     function showComment(){
@@ -57,7 +59,10 @@ input.iw[placeholder]
                         url:"show.php",
                         data:"action=showcomment",
                         success:function(data){
+                             console.log(data);
+
                              $("#comment").html(data);
+                             
                         }
                       });
                     }
@@ -67,7 +72,7 @@ input.iw[placeholder]
  
                     $("#bu").click(function(){
  
-                          
+                          alert("clicked");
                           var msg=$("#msg").val();
                            
                           $.ajax({
@@ -82,7 +87,71 @@ input.iw[placeholder]
                           });
  $("#msg").val('');
                     });
-               });
+                    
+                
+                    
+                    setInterval(function(){
+ 
+                        $.ajax({
+                        type:"post",
+                        url:"show.php",
+                        data:"action=addcomment2",
+                        success:function(data){
+                           console.log($(data).filter('#comm').html());
+
+                             $("#info").prepend($(data).filter('#comm').html());
+                             
+                        }
+                      });
+                         
+                              
+ 
+                          
+                    }, 3000);
+                    
+                    
+                
+
+                    });
+                    
+                   /*
+                    $(document).delegate(".com_bu","click",function(e){
+               
+                var p_id=$("#value").val();
+                    var msg=$("#comment_msg").val();
+                           alert(p_id);
+                   
+                       
+                    
+                    });
+                    */
+                    
+                    
+                    function apply_post(id){
+                    
+                    var p_id=id;
+                      var msg="#comment_"+id;
+                      var msg1=$(msg).val();                   
+                    
+                     $.ajax({
+                              type:"post",
+                              url:"db_post_msg.php",
+                              data:"msg1="+msg1+"&p_id="+p_id+"&action=addcomment2",
+                              success:function(data){
+                              console.log(data);
+                                  
+                              }
+                              
+ 
+                          }).done(function() { //use this
+          
+  alert("DONE!");
+});
+                          $("#msg").val('');
+                    }
+               
+                
+               
        </script>
 
 
@@ -98,7 +167,7 @@ include 'db_check_submit.php';
 
 </head>
 <body>
-
+<div id=info></div>
 
 <?php include 'textarea.php' ; ?>
 
