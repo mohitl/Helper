@@ -31,11 +31,16 @@ echo "show page";
    $result = $conn->query($sql);
 	
        $stack = array();
+       $comm_on_post_stack = array();
      while($row = $result->fetch_assoc()){
                    
                  
                
                array_push($stack, "$row[id]" );
+               
+               $id_for_comm="p_"."$row[id]";
+               
+               echo "<div id=$id_for_comm>";
                
         echo "<li><b>$row[email]</b> : $row[msg]</li>";
        
@@ -43,12 +48,20 @@ echo "show page";
         $c_sql="Select * from comment_msg where id = '$row[id]' ";
         
         $c_result = $conn->query($c_sql);
+        $i=0;
         while($c_row = $c_result->fetch_assoc()){
-        
+        $i++;
         echo "<li><b>$c_row[email]</b> : $c_row[comment]</li>";
         }
+        array_push($comm_on_post_stack, $i );
         
-        $_SESSION["post_msg_no"] =count($stack) ;
+        $_SESSION["post_comment_no"] = $comm_on_post_stack;
+         $_SESSION["post_post_no"] = $stack;
+          print_r($_SESSION["post_comment_no"]);
+        print_r($_SESSION["post_post_no"]);
+        echo "</div>";
+        
+       
         
           echo "<li>";
          
@@ -59,7 +72,7 @@ echo "show page";
               
      }
      
-  
+   $_SESSION["post_msg_no"] =count($stack) ;
   } 
  elseif($action="addcomment2") //to show post msgs updated by  other including  comment
  {
@@ -79,7 +92,7 @@ echo "show page";
               
      }
      
-     
+     //if post and comment increased in  3 secs
      if($_SESSION["post_msg_no"]!=count($stack1))
      {
      
@@ -107,8 +120,13 @@ echo "show page";
      
      
      
+     
+     
+     
    echo "</div>";
    }
+   
+   
 $conn->close();
 ?>    
 
